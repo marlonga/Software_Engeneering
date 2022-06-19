@@ -2,6 +2,7 @@
   <library name="Maven: com.google.protobuf:protobuf-java:3.19.4">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.19.4/protobuf-java-3.19.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/sqljdbc_10.2.1.0_deu/sqljdbc_10.2/deu/mssql-jdbc-10.2.1.jre17.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.19.4/protobuf-java-3.19.4-javadoc.jar!/" />
