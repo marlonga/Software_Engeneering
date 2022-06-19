@@ -23,12 +23,16 @@ public class Benutzer extends Stammdaten {
 		return konto;
 	}
 
-	public void kontoErstellen(String bn, String pw){
+	public void kontoErstellen(String bn, String pw) {
 		this.konto = new Konto(bn,0,pw);
 	}
 
 	public String toString(){
 		return "ID: " + ID +" |Name: "+ name + " |Email: " + email + " |Phonenumb.: " + phone + " |Alter: " + alter + " |Fakultaet: " + Fakultaet + konto;
+	}
+
+	public String getFakultaet() {
+		return Fakultaet;
 	}
 
 }

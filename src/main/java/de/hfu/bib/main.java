@@ -2,11 +2,13 @@ package de.hfu.bib;
 
 import de.hfu.db.Database;
 
+import java.text.ParseException;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
         //Teil 1
          Bibliothek x = new Bibliothek();
@@ -15,42 +17,18 @@ public class main {
              x.bestandErweitern(buchx);
          }
 
-        System.out.println("Teil 1 Buecher: ");
-         for (int i = 0; i < 10; i++){
-             System.out.println(x.Bestand.BibBestand.get(i));
-         }
+        Benutzer phil = new Benutzer(0, "Phil", "@phil", "1234", 21, "Informatik");
+        db.addBenutzer(phil);
+        phil.kontoErstellen("derrPhil", "phil1234");
 
-         //Teil 2
+        db.addBuch(new Buch("123456789","An der Hochschule 2","David Beckham","neue Reihe","Lernen"));
+        db.addBuch(new Buch("123456789","An der Hochschule 2","David Beckham","neue Reihe","Lernen"));
+        db.addBuch(new Buch("123456789","An der Hochschule 2","David Beckham","neue Reihe","Lernen"));
 
-        Benutzer a = new Benutzer(1,"Marlon","marlon@gmail", "0123 4567", 20,"Informatik");
-        Benutzer b = new Benutzer(2,"Robin","robin@gmail", "0123 4568", 20,"Informatik");
-        a.kontoErstellen("guest1","12345");
-        b.kontoErstellen("guest2","1234");
-        x.addKonto(a.getKonto());
-        x.addKonto(b.getKonto());
-        System.out.println();
-        System.out.println("Teil 2 de.hfu.bib.Benutzer: ");
-        System.out.println(a);
-        System.out.println(b);
+        db.readAllData();
 
-        //Teil 3
-        System.out.println();
-        System.out.println("Teil 3.1 ausleihen ausführen: ");
-        for (int i = 0; i < 5; i++)
-        {
-            if(i<3) {
-                a.getKonto().ausleihen(x.searchAusleihobjekt("Star Wars: "+(i+1)),x);
-            }
-            int j = i+5;
-            b.getKonto().ausleihen(x.searchAusleihobjekt("Star Wars: " +(j+1)),x);
-        }
-        System.out.println();
-        System.out.println("Teil 3.2 ausleihen ansehen: ");
-        for (Ausleihe ausleihe : x.alleAusleihen){
-            System.out.println(ausleihe);
-        }
+        System.out.println(phil);
 
-
-
+        //int in der Datenbank verwenden
     }
 }

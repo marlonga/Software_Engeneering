@@ -32,6 +32,30 @@ public class Konto {
 		System.out.println("#"+ benutzername + "<-"+ a);
 	}
 
+	public String getBenutzername() {
+		return benutzername;
+	}
+
+	public float getGuthaben() {
+		return guthaben;
+	}
+
+	public String getPasswort() {
+		return passwort;
+	}
+
+	public int getAktuellAusgelieheneBuecher() {
+		return aktuellAusgelieheneBuecher;
+	}
+
+	public ArrayList<Ausleihobjekt> getAlleBuecher() {
+		return alleBuecher;
+	}
+
+	public Bibliothek getBib() {
+		return bib;
+	}
+
 	public void buchVorbestellen() {
 		// TODO - implement de.hfu.bib.Konto.buchVorbestellen
 		throw new UnsupportedOperationException();
