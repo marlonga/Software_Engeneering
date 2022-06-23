@@ -1,5 +1,8 @@
 package de.hfu.bib;
 
+import de.hfu.db.Database;
+
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +13,15 @@ public class Bibliothek {
 	int aktuelleAusleihenID = 0;
 	ArrayList<Ausleihe> alleAusleihen = new ArrayList<>();
 
-	public void addKonto(Konto konto){
+	public void addKonto(Benutzer benutzer,Konto konto){
 		Konten.add(konto);
+		Database.addKonto(benutzer,konto);
 	}
-	public void addAusleihe(Ausleihe ausleihe){
+	public void addAusleihe(Ausleihe ausleihe,Benutzer benutzer){
 		alleAusleihen.add(ausleihe);
+		Database.addAusleihe(benutzer.ID,ausleihe.getIsbn());
 	}
 
-	/**
-	 * 
-	 * @param searchQuery
-	 */
 
 	public Ausleihobjekt searchAusleihobjekt(String searchQuery) {
 		for (Ausleihobjekt o : Bestand.BibBestand){
@@ -31,27 +32,33 @@ public class Bibliothek {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param name
-	 */
-	public List<Ausleihobjekt> getAllFromAuthor(String name) {
-		// TODO - implement de.hfu.bib.Bibliothek.getAllFromAuthor
-		throw new UnsupportedOperationException();
+	public void extendDeadline(int kontoID,String isbn,int days ) {
+		Database.extendDeadLine(kontoID,isbn,days);
 	}
 
-	/**
-	 * 
-	 * @param reihe
-	 */
-	public List<Ausleihobjekt> getAllFromRow(String reihe) {
-		// TODO - implement de.hfu.bib.Bibliothek.getAllFromRow
-		throw new UnsupportedOperationException();
+
+	public ArrayList<Buch> getAllFromAuthor(String name) {
+		ArrayList<Buch> result = new ArrayList<>();
+		result = Database.getAllbuecherFromAuthor(name);
+		return result;
 	}
 
-	public void getUsers() {
-		// TODO - implement de.hfu.bib.Bibliothek.getUsers
-		throw new UnsupportedOperationException();
+	public ArrayList<Buch> getAllFromRow(String reihe) {
+		ArrayList<Buch> result = new ArrayList<>();
+		result = Database.getAllbuecherFromRow(reihe);
+		return result;
+	}
+	public int getAllBooksNumber(String isbn) {
+		int result;
+		result = Database.getAllbuecherAmount(isbn);
+		return result;
+	}
+
+	public ArrayList<Konto> getUsers() {
+		ArrayList<Konto> result = new ArrayList<>();
+		result = Database.getAllKonten();
+		return result;
+
 	}
 
 	/**
@@ -62,26 +69,32 @@ public class Bibliothek {
 		Bestand.addBibBestand(objekt);
 	}
 
-	/**
-	 * 
-	 * @param benutzername
-	 * @param passwort
-	 */
+
 	public boolean anmelden(String benutzername, String passwort) {
-		// TODO - implement de.hfu.bib.Bibliothek.anmelden
+
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param isbn
-	 */
+
 	public int getAmount(String isbn) {
-		// TODO - implement de.hfu.bib.Bibliothek.getAmount
-		throw new UnsupportedOperationException();
+		return Database.getAllbuecherAmount(isbn);
 	}
 	public int getIDfuerAusleihe() {
 		return aktuelleAusleihenID++;
 	}
 
+	public ArrayList<Buch> getBestand() {
+		return Database.getAllBücher();
+	}
+
+	public ArrayList<Konto> getKonten() {
+		return Database.getAllKonten();
+	}
+	public int getIDfuerAusleihe(){
+		return IDfuerAusleihe++;
+	}
+
+	public ArrayList<Ausleihe> getAlleAusleihen() {
+		return Database.getAllAusleihen();
+	}
 }

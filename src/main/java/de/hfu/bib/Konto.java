@@ -1,5 +1,10 @@
 package de.hfu.bib;
 
+import de.hfu.db.Database;
+
+import javax.swing.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +18,7 @@ public class Konto {
 	private Bibliothek bib;
 
 
-	public Konto(String benutzername, float guthaben, String passwort) {
+	public Konto(String benutzername,float guthaben, String passwort) {
 		this.benutzername = benutzername;
 		this.guthaben = guthaben;
 		this.passwort = passwort;
@@ -21,15 +26,15 @@ public class Konto {
 		this.alleBuecher = new ArrayList<>();
 	}
 
-	public void ausleihen(Ausleihobjekt a, Bibliothek b) {
-		alleBuecher.add(a);
-		b.Bestand.BibBestand.remove(a);
-		Date start = new Date();
+	public void ausleihen(Buch buch, Bibliothek b,Benutzer benutzer) {
+		alleBuecher.add(buch);
+		b.getBestand().remove(buch);
+		Timestamp start = new Timestamp(new Date().getTime());
 		long dif = start.getTime() +1000*60*60*24*14;
-		Date deadline = new Date(dif);
-		Ausleihe ausleihe = new Ausleihe(b.getIDfuerAusleihe(),start,deadline);
-		b.addAusleihe(ausleihe);
-		System.out.println("#"+ benutzername + "<-"+ a);
+		Timestamp deadline = new Timestamp(dif);
+		Ausleihe ausleihe = new Ausleihe(b.getIDfuerAusleihe(),deadline,buch.getIsbn());
+		b.addAusleihe(ausleihe,benutzer);
+		Database.buchZurueckgeben(buch);
 	}
 
 	public String getBenutzername() {
@@ -58,24 +63,6 @@ public class Konto {
 
 	public void buchVorbestellen() {
 		// TODO - implement de.hfu.bib.Konto.buchVorbestellen
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param name
-	 */
-	public String getBuch(String name) {
-		// TODO - implement de.hfu.bib.Konto.getBuch
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param name
-	 */
-	public void addBuch(String name) {
-		// TODO - implement de.hfu.bib.Konto.addBuch
 		throw new UnsupportedOperationException();
 	}
 
