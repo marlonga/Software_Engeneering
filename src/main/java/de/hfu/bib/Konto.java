@@ -18,6 +18,7 @@ public class Konto {
 	private Bibliothek bib;
 
 
+
 	public Konto(String benutzername,float guthaben, String passwort) {
 		this.benutzername = benutzername;
 		this.guthaben = guthaben;

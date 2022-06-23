@@ -27,6 +27,11 @@ public class UserInterface {
         //Befehlsausgabe
         befehlsausgabe();
         System.out.println(" WILLKOMMEN!!!");
+        System.out.println(" WILLKOMMEN!!!");
+        System.out.println(" WILLKOMMEN!!!");
+        System.out.println(" WILLKOMMEN!!!");
+        System.out.println();
+
 
         while (!exitBool) {
             while (anmeldung()) {

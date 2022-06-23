@@ -8,10 +8,18 @@ import java.util.List;
 
 public class Bibliothek {
 
-	Bibliotheksbestand Bestand = new Bibliotheksbestand();
+	//Bibliotheksbestand Bestand = new Bibliotheksbestand();
+	private ArrayList<Buch> Bestand = new ArrayList<>();
 	ArrayList<Konto> Konten = new ArrayList<>();
-	int aktuelleAusleihenID = 0;
+	private int IDfuerAusleihe = 0;
+
 	ArrayList<Ausleihe> alleAusleihen = new ArrayList<>();
+
+	public Bibliothek() {
+		Bestand = Database.getAllBücher();
+		Konten = Database.getAllKonten();
+		alleAusleihen = Database.getAllAusleihen();
+	}
 
 	public void addKonto(Benutzer benutzer,Konto konto){
 		Konten.add(konto);
@@ -23,8 +31,8 @@ public class Bibliothek {
 	}
 
 
-	public Ausleihobjekt searchAusleihobjekt(String searchQuery) {
-		for (Ausleihobjekt o : Bestand.BibBestand){
+	public Buch searchBuch(String searchQuery) {
+		for (Buch o : Bestand){
 			if (searchQuery.equals(o.getTitel())){
 				return o;
 			}
@@ -61,12 +69,10 @@ public class Bibliothek {
 
 	}
 
-	/**
-	 *
-	 * @param objekt
-	 */
-	public void bestandErweitern(Ausleihobjekt objekt) {
-		Bestand.addBibBestand(objekt);
+
+	public void bestandErweitern(Buch b) {
+		Bestand.add(b);
+		Database.addBuch(b);
 	}
 
 
@@ -79,9 +85,7 @@ public class Bibliothek {
 	public int getAmount(String isbn) {
 		return Database.getAllbuecherAmount(isbn);
 	}
-	public int getIDfuerAusleihe() {
-		return aktuelleAusleihenID++;
-	}
+
 
 	public ArrayList<Buch> getBestand() {
 		return Database.getAllBücher();

@@ -1,12 +1,9 @@
 package de.hfu.bib;
 
-public class Benutzer extends Stammdaten {
+import de.hfu.db.Database;
 
-	private int ID;
-	private String name;
-	private String email;
-	private String phone;
-	private int alter;
+
+public class Benutzer extends Stammdaten {
 	private String Fakultaet;
 	private Konto konto;
 
@@ -25,10 +22,11 @@ public class Benutzer extends Stammdaten {
 
 	public void kontoErstellen(String bn, String pw) {
 		this.konto = new Konto(bn,0,pw);
+		Database.addKonto(this,this.konto);
 	}
 
 	public String toString(){
-		return "ID: " + ID +" |Name: "+ name + " |Email: " + email + " |Phonenumb.: " + phone + " |Alter: " + alter + " |Fakultaet: " + Fakultaet + konto;
+		return "ID: " + ID +" |Name: "+ name + " |Email: " + email + " |Phonenumb.: " + phone + " |Alter: " + alter + " |Fakultaet: " + Fakultaet +" #"+ konto;
 	}
 
 	public String getFakultaet() {
