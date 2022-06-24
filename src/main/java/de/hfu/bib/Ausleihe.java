@@ -22,7 +22,7 @@ public class Ausleihe {
 
 
 	public String toString(){
-		return "ID: " + ID + " |deadline: " + deadline;
+		return "ID: " + ID + " |deadline: " + deadline + " |isbn: "+ isbn;
 	}
 
 

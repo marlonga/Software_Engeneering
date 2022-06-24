@@ -38,20 +38,14 @@ public class UserInterface {
         befehle.add(new Pair("returnBook", "     --returnBook <isbn>                                           :: gebe das Buch <isbn> zurück "));
         //Befehlsausgabe
         befehlsausgabe();
-        System.out.println(" WILLKOMMEN!!!");
-        System.out.println(" WILLKOMMEN!!!");
-        System.out.println(" WILLKOMMEN!!!");
-        System.out.println(" WILLKOMMEN!!!");
+        System.out.println();
+        System.out.println(" WILLKOMMEN!");
         System.out.println();
 
 
         while (!exitBool) {
-            while (anmeldung()) {
-            }
-            ;
-            while (bibInterface()) {
-            }
-            ;
+            while (anmeldung()) {};
+            while (bibInterface()) {};
         }
     }
 
@@ -116,11 +110,11 @@ public class UserInterface {
                 answer += readInput();
 
                 if (existsKonto(answer)) {
-                    System.out.println("#System: Dieses Konto ist belegt!");
+                    System.out.println(ANSI_RED +"#System: Dieses Konto ist belegt!" + ANSI_RESET);
                 } else {
                     String search[] = answer.split(" ");
                     bib.addKonto(b, new Konto(search[0], 0, search[1]));
-                    System.out.println("#System: Neues Konto erstellt!");
+                    System.out.println(ANSI_GREEN +"#System: Neues Konto erstellt!" + ANSI_RESET);
                     return true;
                 }
             case "login":
@@ -130,17 +124,17 @@ public class UserInterface {
                 System.out.println("  Passwort: ");
                 answer += readInput() + " ";
                 if (existsKonto(answer)) {
-                    System.out.println("#System: Anmeldung gelungen");
+                    System.out.println(ANSI_GREEN +"#System: Anmeldung gelungen"+ ANSI_RESET);
                     return false;
                 } else {
-                    System.out.println("#System: Anmeldung gescheitert");
+                    System.out.println(ANSI_RED +"#System: Anmeldung gescheitert"+ ANSI_RESET);
                     return true;
                 }
             case "":
-                System.out.println("#System: keine Eingabe ");
+                System.out.println(ANSI_RED + "#System: keine Eingabe "+ ANSI_RESET);
                 return true;
             default:
-                System.out.println("#System: Falsche Eingabe[" + answer + "]");
+                System.out.println(ANSI_RED + "#System: Falsche Eingabe[" + answer + "]"+ ANSI_RESET);
                 return true;
         }
     }
@@ -156,6 +150,15 @@ public class UserInterface {
             }
         }
         return false;
+    }
+    public Konto getKontoBy(String user) {
+
+        for (Konto k : Database.getAllKonten()) {
+            if (user.equals(k.getBenutzername())) {
+                return k;
+            }
+        }
+        return null;
     }
 
     public boolean bibInterface() {
@@ -178,7 +181,7 @@ public class UserInterface {
                 System.out.println(ANSI_BLUE +"#System: Abmeldung erfolgreich! "+ ANSI_RESET);
                 return false;
             case "":
-                System.out.println("#System: keine Eingabe ");
+                System.out.println(ANSI_RED + "#System: keine Eingabe " + ANSI_RESET);
                 return true;
             default:
                 String[] temp = answer.split(" ");
@@ -199,7 +202,7 @@ public class UserInterface {
                     }
                     //richtiger befehl
 
-                    System.out.println(temp[0]);
+
                     switch (temp[0]) {
                         case "addBook":
                             bib.bestandErweitern(new Buch(temp[1], temp[2], temp[3], temp[4], temp[5]));
@@ -262,6 +265,23 @@ public class UserInterface {
                                 System.out.println(ANSI_RED + "#System: No Books in this Row" + ANSI_RESET);
                             }
                             break;
+                        case"rentBook":
+                            if(bib.existBuch(temp[1])){
+                                System.out.println("Sie haben das Buch " + temp[1] + " ausgeliehen. Das Buch wurde ihrem Konto zugeschreiben");
+                                getKontoBy(username).ausleihen(bib.searchBuch(temp[1]), bib,new Benutzer(Database.getIDFromUser(username),null,null,null,0,null));
+                            }else {
+                                System.out.println(ANSI_RED + "#System: Book does not exist" + ANSI_RESET);
+                            }
+                            break;
+                        case"returnBook":
+                            if(bib.existBuch(temp[1])){
+                                System.out.println("Sie haben das Buch " + temp[1] + " zurückgegeben. Das Buch wurde bei ihrem Konto entfernt");
+                                getKontoBy(username).buchRueckgabe(bib.searchBuch(temp[1]),new Benutzer(Database.getIDFromUser(username),null,null,null,0,null));
+                            }else {
+                                System.out.println(ANSI_RED + "#System: Book is not in your inventory" + ANSI_RESET);
+                            }
+                            break;
+
                     }
 
                 } else {

@@ -311,7 +311,9 @@ public class Database {
         try {
             statement = connection.createStatement();
 
-            String s = "UPDATE bücher\n" + "SET anzahl = anzahl  1 where isbn = " + b.getIsbn();
+            String s = "UPDATE bücher\n" + "SET anzahl = anzahl + 1 where isbn = " + b.getIsbn();
+            statement.execute(s);
+            s = "DELETE FROM ausleihen where kontoid = " + benutzer.getID();
             statement.execute(s);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -81,7 +81,7 @@ public class Konto {
 	}
 
 	public String toString(){
-		return " |de.hfu.bib.Konto: " + benutzername;
+		return " |Konto: " + benutzername;
 	}
 
 }

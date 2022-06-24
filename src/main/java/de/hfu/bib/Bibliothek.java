@@ -21,6 +21,7 @@ public class Bibliothek {
 		alleAusleihen = Database.getAllAusleihen();
 	}
 
+
 	public void addKonto(Benutzer benutzer,Konto konto){
 		Konten.add(konto);
 		Database.addKonto(benutzer,konto);
@@ -33,11 +34,19 @@ public class Bibliothek {
 
 	public Buch searchBuch(String searchQuery) {
 		for (Buch o : Bestand){
-			if (searchQuery.equals(o.getTitel())){
+			if (searchQuery.equals(o.getIsbn())){
 				return o;
 			}
 		}
 		return null;
+	}
+	public boolean existBuch(String searchQuery){
+		for (Buch o : Bestand){
+			if (searchQuery.equals(o.getIsbn())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void extendDeadline(int kontoID,String isbn,int days ) {
