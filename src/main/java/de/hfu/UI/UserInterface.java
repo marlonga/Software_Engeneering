@@ -3,9 +3,8 @@ package de.hfu.UI;
 import de.hfu.bib.*;
 import de.hfu.db.Database;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.print.Book;
+import java.io.*;
 import java.util.ArrayList;
 
 public class UserInterface {
@@ -13,6 +12,16 @@ public class UserInterface {
     private String username = "";
     private Bibliothek bib = new Bibliothek();
     private boolean exitBool = false;
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public UserInterface() {
         befehle.add(new Pair("login", "       log in    *type in username and password"));
@@ -23,7 +32,10 @@ public class UserInterface {
         befehle.add(new Pair("bookAmount", "  --bookAmount                                          :: gibt die Anzahl eins Buches aus "));
         befehle.add(new Pair("fromRow", "     --fromRow                                             :: gibt alle Bücher einer Reihe aus "));
         befehle.add(new Pair("alleAusleihen", "     --alleAusleihen                                            :: gibt alle Ausleihen aus "));
-        befehle.add(new Pair("extendDeadline", "     --alleAusleihen                                            :: gibt alle Ausleihen aus "));
+        befehle.add(new Pair("extendDeadline", "     --extendDeadline <isbn> <days>                                        :: verlängert die deadline des angemeldetetn Nutzers um <days> tage für das Buch <isbn> "));
+        befehle.add(new Pair("allUsers", "     --allUsers                                           :: gibt alle Konten aus "));
+        befehle.add(new Pair("rentBook", "     --rentBook <isbn>                                           :: leihe das Buch <isbn> aus "));
+        befehle.add(new Pair("returnBook", "     --returnBook <isbn>                                           :: gebe das Buch <isbn> zurück "));
         //Befehlsausgabe
         befehlsausgabe();
         System.out.println(" WILLKOMMEN!!!");
@@ -65,12 +77,12 @@ public class UserInterface {
     public boolean anmeldung() {
 
         System.out.println("#System: Einloggen erforderlich oder neu Anmeldung nötig");
-        System.out.print(">user:"); //Startabfrage hinzufügen
+        System.out.print(ANSI_YELLOW + ">user:" + ANSI_RESET); //Startabfrage hinzufügen
         String answer = readInput();
         switch (answer) {
             case "RESET":
                 Database.resetDataBase();
-                System.out.println("#System: Komplette Datenbank-Einträge gelöscht :)");
+                System.out.println(ANSI_BLUE + "#System: Komplette Datenbank-Einträge gelöscht :)" + ANSI_RESET);
                 return true;
             case "exit":
                 exitBool = true;
@@ -78,15 +90,15 @@ public class UserInterface {
             case "new login":
                 answer = "";
 
-                System.out.print("  Name: ");
+                System.out.print(ANSI_BLUE + "  Name: " + ANSI_RESET);
                 answer += readInput() + " ";
-                System.out.print("  Email: ");
+                System.out.print(ANSI_BLUE + "  Email: " + ANSI_RESET);
                 answer += readInput() + " ";
-                System.out.print("  Phone: ");
+                System.out.print(ANSI_BLUE + "  Phone: " + ANSI_RESET);
                 answer += readInput() + " ";
-                System.out.print("  Age: ");
+                System.out.print(ANSI_BLUE + "  Age: " + ANSI_RESET);
                 answer += readInput() + " ";
-                System.out.print("  Fakulteat: ");
+                System.out.print(ANSI_BLUE + "  Fakulteat: " + ANSI_RESET);
                 answer += readInput() + " ";
                 String[] tempanswer = answer.split(" ");
 
@@ -115,8 +127,8 @@ public class UserInterface {
                 answer = "";
                 System.out.print("  Benutzername: ");
                 answer += readInput() + " ";
-                System.out.print("  Passwort: ");
-                answer += readInput();
+                System.out.println("  Passwort: ");
+                answer += readInput() + " ";
                 if (existsKonto(answer)) {
                     System.out.println("#System: Anmeldung gelungen");
                     return false;
@@ -150,7 +162,7 @@ public class UserInterface {
         if (exitBool == true) {
             return false;
         }
-        System.out.print(">" + username + ":"); //Startabfrage hinzufügen
+        System.out.print(ANSI_YELLOW + ">" + username + ":" + ANSI_RESET); //Startabfrage hinzufügen
         String answer = readInput();
 
         String s = befehle.get(0).getCommand();
@@ -162,6 +174,9 @@ public class UserInterface {
             case "?":
                 befehlsausgabe();
                 return true;
+            case "logout":
+                System.out.println(ANSI_BLUE +"#System: Abmeldung erfolgreich! "+ ANSI_RESET);
+                return false;
             case "":
                 System.out.println("#System: keine Eingabe ");
                 return true;
@@ -188,15 +203,14 @@ public class UserInterface {
                     switch (temp[0]) {
                         case "addBook":
                             bib.bestandErweitern(new Buch(temp[1], temp[2], temp[3], temp[4], temp[5]));
-                            System.out.println("#System: Book added to Libary{" + temp[1] + "," + temp[2] + "," + temp[3] + "," + temp[4] + "," + temp[5] + "}");
+                            System.out.println(ANSI_BLUE + "#System: Book added to Libary{" + temp[1] + "," + temp[2] + "," + temp[3] + "," + temp[4] + "," + temp[5] + "}" + ANSI_RESET);
                             break;
                         case "allBooks":
                             ArrayList<Buch> output = Database.getAllBücher();
-                            System.out.println("#System: all Books in Libary");
+                            System.out.println(ANSI_BLUE + "#System: all Books in Libary" + ANSI_RESET);
                             for(Buch b : output){
-                                System.out.println("  " + b);
+                                System.out.println(ANSI_BLUE + "  " + b + ANSI_RESET);
                             }
-
                             break;
                         case "alleAusleihen":
                             System.out.println("#System: all Ausleihen in Libary");
@@ -208,14 +222,20 @@ public class UserInterface {
                             break;
                         case "extendDeadline":
                                 bib.extendDeadline(Database.getIDFromUser(username),temp[1],Integer.parseInt(temp[2]));
-
+                                break;
+                        case"allUsers":
+                            ArrayList<Konto> outputK = bib.getKonten();
+                            System.out.println(ANSI_BLUE + "#System: all Users in Libary" + ANSI_RESET);
+                            for(Konto b : outputK){
+                                System.out.println("  " + b);
+                            }
                             break;
                         case "bookAmount":
                             int bookamount = bib.getAllBooksNumber(temp[1]);
                             if(bookamount > 0){
                                 System.out.println("  Amount:"+ bookamount);
                             }else {
-                                System.out.println("#System: Book not available  ");
+                                System.out.println(ANSI_RED + "#System: Book not available  " + ANSI_RESET);
                             }
                             break;
                         case "fromAuthor":
@@ -228,7 +248,7 @@ public class UserInterface {
                                     System.out.println("  " + b);
                                 }
                             } else {
-                                System.out.println("#System: No books of this author ");
+                                System.out.println(ANSI_RED + "#System: No books of this author " + ANSI_RESET);
                             }
                             break;
                         case "fromRow":
@@ -239,13 +259,13 @@ public class UserInterface {
                                     System.out.println("  " + a);
                                 }
                             } else {
-                                System.out.println("#System: No Books in this Row");
+                                System.out.println(ANSI_RED + "#System: No Books in this Row" + ANSI_RESET);
                             }
                             break;
                     }
 
                 } else {
-                    System.out.println("#System: Falsche Eingabe [" + answer + "]");
+                    System.out.println( ANSI_RED + "#System: Falsche Eingabe [" + answer + "]" + ANSI_RESET);
                 }
                 return true;
         }

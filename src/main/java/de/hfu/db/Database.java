@@ -306,7 +306,7 @@ public class Database {
         }
     }
 
-    public static void buchZurueckgeben(Buch b) {
+    public static void buchZurueckgeben(Buch b,Benutzer benutzer) {
         Statement statement = null;
         try {
             statement = connection.createStatement();

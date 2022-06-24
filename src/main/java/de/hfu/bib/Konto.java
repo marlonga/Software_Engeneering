@@ -28,14 +28,22 @@ public class Konto {
 	}
 
 	public void ausleihen(Buch buch, Bibliothek b,Benutzer benutzer) {
-		alleBuecher.add(buch);
-		b.getBestand().remove(buch);
-		Timestamp start = new Timestamp(new Date().getTime());
-		long dif = start.getTime() +1000*60*60*24*14;
-		Timestamp deadline = new Timestamp(dif);
-		Ausleihe ausleihe = new Ausleihe(b.getIDfuerAusleihe(),deadline,buch.getIsbn());
-		b.addAusleihe(ausleihe,benutzer);
-		Database.buchZurueckgeben(buch);
+		if(Database.getAllbuecherAmount(buch.getIsbn()) > 0) {
+			alleBuecher.add(buch);
+			b.getBestand().remove(buch);
+			Timestamp start = new Timestamp(new Date().getTime());
+			long dif = start.getTime() + 1000 * 60 * 60 * 24 * 14;
+			Timestamp deadline = new Timestamp(dif);
+			Ausleihe ausleihe = new Ausleihe(b.getIDfuerAusleihe(), deadline, buch.getIsbn());
+			b.addAusleihe(ausleihe, benutzer);
+			Database.buchAusleihen(buch);
+		}else{
+			System.out.println("Buch " + buch.getIsbn() + " ist im Moment nicht verfügbar");
+		}
+	}
+
+	public void buchRueckgabe(Buch buch,Benutzer benutzer){
+		Database.buchZurueckgeben(buch, benutzer);
 	}
 
 	public String getBenutzername() {

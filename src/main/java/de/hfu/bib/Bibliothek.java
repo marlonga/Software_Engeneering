@@ -57,17 +57,9 @@ public class Bibliothek {
 		return result;
 	}
 	public int getAllBooksNumber(String isbn) {
-		int result;
-		result = Database.getAllbuecherAmount(isbn);
-		return result;
+		return Database.getAllbuecherAmount(isbn);
 	}
 
-	public ArrayList<Konto> getUsers() {
-		ArrayList<Konto> result = new ArrayList<>();
-		result = Database.getAllKonten();
-		return result;
-
-	}
 
 
 	public void bestandErweitern(Buch b) {
@@ -75,16 +67,6 @@ public class Bibliothek {
 		Database.addBuch(b);
 	}
 
-
-	public boolean anmelden(String benutzername, String passwort) {
-
-		throw new UnsupportedOperationException();
-	}
-
-
-	public int getAmount(String isbn) {
-		return Database.getAllbuecherAmount(isbn);
-	}
 
 
 	public ArrayList<Buch> getBestand() {
@@ -94,6 +76,7 @@ public class Bibliothek {
 	public ArrayList<Konto> getKonten() {
 		return Database.getAllKonten();
 	}
+
 	public int getIDfuerAusleihe(){
 		return IDfuerAusleihe++;
 	}
